@@ -8,8 +8,17 @@
 import SwiftUI
 
 struct NewTimeView: View {
+    @EnvironmentObject var contentViewModel: ContentView.ViewModel
+    @State var viewModel = ViewModel()
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List(viewModel.searchResults, id: \.self) { timezone in
+            Button(timezone) {
+                contentViewModel.addTimeZone(timezone)
+            }
+        }
+        .navigationTitle("Add new time")
+        .searchable(text: $viewModel.searchText)
     }
 }
 
