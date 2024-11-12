@@ -9,7 +9,7 @@ import SwiftUI
 
 extension ContentView {
     class ViewModel: ObservableObject {
-        @Published private(set) var timeZones = ["GMT", "Europe/Moscow"]
+        @Published private(set) var timeZonesNotString: [TimeZone] = [.gmt, .current]
         
         func time(for timeZoneId: String) -> String {
             let dateFormatter = DateFormatter()
@@ -22,23 +22,14 @@ extension ContentView {
             return dateFormatter.string(from: Date.now)
         }
         
-        func addTimeZone(_ timeZone: String) {
-            timeZones.append(timeZone)
-        }
-    }
-}
-
-extension NewTimeView {
-    @Observable
-    class ViewModel {
-        var searchText = ""
-        
-        var searchResults: [String] {
-            if searchText.isEmpty {
-                return TimeZone.knownTimeZoneIdentifiers
-            } else {
-                return TimeZone.knownTimeZoneIdentifiers.filter { $0.contains(searchText)}
+        func addTimeZoneNotString(_ timeZone: String) {
+            if let zone = TimeZone(identifier: timeZone) {
+                timeZonesNotString.append(zone)
             }
+        }
+        
+        func deleteTimeZoneNotString(at offsets: IndexSet) {
+            timeZonesNotString.remove(atOffsets: offsets)
         }
     }
 }

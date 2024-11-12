@@ -11,7 +11,7 @@ import SwiftUI
 struct WorldClockApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(path: [])
         }
     }
 }

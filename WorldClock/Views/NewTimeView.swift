@@ -10,11 +10,15 @@ import SwiftUI
 struct NewTimeView: View {
     @EnvironmentObject var contentViewModel: ContentView.ViewModel
     @State var viewModel = ViewModel()
+    @Binding var path: [NavigationDestination]
     
     var body: some View {
         List(viewModel.searchResults, id: \.self) { timezone in
-            Button(timezone) {
-                contentViewModel.addTimeZone(timezone)
+            Button {
+                contentViewModel.addTimeZoneNotString(timezone)
+                path.popLast()
+            } label: {
+                Text(TimeZone(identifier: timezone)?.prettyDescription ?? "")
             }
         }
         .navigationTitle("Add new time")
@@ -23,5 +27,6 @@ struct NewTimeView: View {
 }
 
 #Preview {
-    NewTimeView()
+    @State var path = [NavigationDestination]()
+    return NewTimeView(path: $path)
 }
